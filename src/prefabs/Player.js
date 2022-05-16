@@ -4,6 +4,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.add.existing(this);
         this.scene.add.existing(this);
+        
+        this.gameOver = false;
     }
 
     //for this to work may need to be in scene
@@ -22,27 +24,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update() {
 
-        if (Phaser.Input.Keyboard.JustDown(keyUp)) {
-            this.setVelocityY(10);
+        if (keyUp.isDown) {
+            //this.setVelocityY(10);
+            this.y -= 3;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(keyDown)) {
-            this.setVelocityY(-10);
+        if (keyDown.isDown) {
+            //this.setVelocityY(-10);
+            this.y += 3;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(keyLeft)) {
-            this.setVelocityX(-10);
+        if (keyLeft.isDown) {
+            //this.setVelocityX(-10);
+            this.x -= 3;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(keyRight)) {
-            this.setVelocityX(-10);
+        if (keyRight.isDown) {
+            //this.setVelocityX(-10);
+            this.x += 3;
         }
 
         //dodging mechanic
-        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+        /*if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             //move player towards pointer
             this.physics.moveToObject(this, pointer, 10);
-        }
+        }*/
 
         /*
         if (game.input.activePointer.leftButton.isDown) {

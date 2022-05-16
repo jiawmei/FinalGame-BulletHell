@@ -6,6 +6,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
     }
 
+    //for this to work may need to be in scene
+    //https://phaser.io/examples/v2/arcade-physics/shoot-the-pointer
+    /*
+    create() {
+        bullets = game.add.group();
+        bullets.enableBody = true;
+        bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+        bullets.createMultiple(50, 'bullet');
+        bullets.setAll('checkWorldBounds', true);
+        bullets.setAll('outOfBoundsKill', true);
+    }
+    */
+
     update() {
 
         if (Phaser.Input.Keyboard.JustDown(keyUp)) {
@@ -24,8 +38,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(-10);
         }
 
+        //dodging mechanic
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-
+            //move player towards pointer
+            this.physics.moveToObject(this, pointer, 10);
         }
 
         /*

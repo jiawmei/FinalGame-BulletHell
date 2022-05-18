@@ -8,6 +8,7 @@ class Start extends Phaser.Scene{
     }
 
     create(){
+        //some temp menu config
         let menuConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -16,6 +17,7 @@ class Start extends Phaser.Scene{
             fixedWidth: 0
         }
         
+        // basic instructions on how to play
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.add.text(200, 300, "Arrow keys to move",menuConfig).setOrigin(0);
         this.add.text(100, 350, "Space to fire(only sound currently)",menuConfig).setOrigin(0);

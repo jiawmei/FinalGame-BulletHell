@@ -1,16 +1,19 @@
 class LevelOne extends Phaser.Scene{
     constructor(){
         super("level1scene");
+        this.bulletGroup;
     }
 
     preload(){
         this.load.audio('shoot', './assets/Shot4.mp3');
         this.load.image('tempback', './assets/BG5-01.png');
-        this.load.image('char', './assets/placeholdercharacter.png')
+        this.load.image('char', './assets/placeholdercharacter.png');
+        this.load.image('bullets', './assets/BulletsBlack1.png');
     }
 
     create(){
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'tempback').setOrigin(0, 0);
+        this.bulletGroup = new BulletGroup(this);
         this.player = new Player(this,375, 800, 'char');
         //this.enemy1 = new Enemy(this, 50, 0, 'char');
         //this.enemy2 = new Enemy(this, 125, -250, 'char');
@@ -19,6 +22,7 @@ class LevelOne extends Phaser.Scene{
         //this.enemy5 = new Enemy(this, 350, -300, 'char');
         //this.enemy6 = new Enemy(this, 425, -100, 'char');
         
+
         this.player.setCollideWorldBounds(true);
         
         // keyobaord keycodes
@@ -44,11 +48,17 @@ class LevelOne extends Phaser.Scene{
         //set enemy to fall
         this.enemy.setVelocityY(500);
         
-        //when colliding with an arrow
+        //when colliding with an player
         this.physics.add.collider(this.player, this.enemy, function(player) {
             
             player.gameOver = true;
         }); 
+
+        // enemy collision (NEEDS FIXING)
+        /*this.physics.add.collider(this.bulletGroup, this.enemy, function() {
+            this.enemy.destroy();
+        });*/
+
         //change the timing of enemy spawns
         this.enemyTimer.reset({
             delay: Phaser.Math.Between(100, 500),
@@ -57,7 +67,9 @@ class LevelOne extends Phaser.Scene{
             loop: true
         });
     }
-
+    shootBullet(){
+        this.bulletGroup.fireBullet(this.player.x, this.player.y - 20);
+    }
 
     update(){
         // change background later
@@ -73,6 +85,7 @@ class LevelOne extends Phaser.Scene{
         
         // firing sound, no firing yet
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+            this.shootBullet();
             this.sound.play('shoot', {volume:0.1});
             
         }

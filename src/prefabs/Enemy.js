@@ -14,6 +14,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }*/
     }
 
+    gotHit(){
+        this.destroy();
+    }
+
     //might want this function to be in scene
     /*enemyFollows() {
         this.physics.moveToObject(this, Player, 10);

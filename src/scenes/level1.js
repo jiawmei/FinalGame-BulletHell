@@ -9,6 +9,7 @@ class LevelOne extends Phaser.Scene{
         this.load.image('tempback', './assets/BG5-01.png');
         this.load.image('char', './assets/placeholdercharacter.png');
         this.load.image('bullets', './assets/BulletsBlack1.png');
+        this.load.image('enemyBullets', './assets/BulletsBlack1.png');
     }
 
     create(){
@@ -41,7 +42,7 @@ class LevelOne extends Phaser.Scene{
         });
         this.physics.world.on('worldbounds', this.onWorldbounds, this);
         
-
+        
         this.player.setCollideWorldBounds(true);
         
         // keyobaord keycodes
@@ -171,5 +172,6 @@ class LevelOne extends Phaser.Scene{
         if(this.player.gameOver){
             this.scene.start("titleScene");
         }
+        this.enemyGroup.hitRight();
     }
 }

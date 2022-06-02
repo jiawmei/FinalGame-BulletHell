@@ -37,8 +37,6 @@ class LevelOne extends Phaser.Scene{
         }); 
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, this.enemyHitEvent, null, this.scene);
         
-       
-        
         // keyobaord keycodes
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -146,5 +144,6 @@ class LevelOne extends Phaser.Scene{
         if(this.player.gameOver){
             this.scene.start("titleScene");
         }
+        this.enemyGroup.hitRight();
     }
 }

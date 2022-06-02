@@ -11,10 +11,6 @@ class EnemyGroup extends Phaser.Physics.Arcade.Group {
     }
 
     spawnEnemy() {
-        /*
-        const enemy = this.add(new Enemy(this.scene, Phaser.Math.Between(0, 750), 0, "enemy"));
-        enemy.setVelocityY(500);
-        */
         const enemy = this.getFirstDead(false);
         if(enemy){
             enemy.spawn(Phaser.Math.Between(0, 750), 0);
@@ -23,5 +19,10 @@ class EnemyGroup extends Phaser.Physics.Arcade.Group {
         }
     }
 
+    hitRight() {
+        if(this.x >=750){
+            this.setVelocityX(-300);
+        }
+    }
 }
 

@@ -4,36 +4,23 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.add.existing(this);
         this.scene.add.existing(this);
-
-        this.colldideWorldBounds = true;
+        this.setCollideWorldBounds(true);
+        this.body.onWorldBounds = true;
     }
-/*
-    preUpdate(time, delta){
-        super.preUpdate(time, delta);
 
-        if(this.y <= 0){
-            this.setActive(false);
-            this.setVisible(false);
-        }
-    }
-*/
     update() {
-        if (this.y <= 0) {
-           this.destroy();
+        if (this.y <= 900) {
+           this.setActive(false);
+           this.setVisible(false);
         }
     }
 
-    gotHit(){
-        this.deactivate();
+
+    spawn(x, y) {
+        this.body.reset(x,y);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setVelocityY(450);
     }
-
-    //might want this function to be in scene
-    /*enemyFollows() {
-        this.physics.moveToObject(this, Player, 10);
-    }*/
-
-    /*reset(){
-        this.y = 0;
-    }*/
     
 }

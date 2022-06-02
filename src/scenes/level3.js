@@ -1,26 +1,20 @@
-class LevelOne extends Phaser.Scene{
+class LevelThree extends Phaser.Scene{
     constructor(){
-        super("level1scene");
+        super("level3scene");
     }
 
     preload(){
-        this.load.audio('shoot', './assets/Shot4.mp3');
-        this.load.image('tempback', './assets/BG5-01.png');
-        this.load.image('char', './assets/character100.png');
-        this.load.image('bullets', './assets/BulletsBlack1.png');
-        this.load.image('enemy', './assets/Enemies.png');
-        this.load.image('enemyBullets', './assets/Circle.png');
-        this.load.image('placeholder', './assets/placeholdercharacter.png');
+        this.load.image('back3', './assets/BG3-01.png');
     }
 
+
     create(){
-        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'tempback').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'back3').setOrigin(0, 0);
         this.bulletGroup = new BulletGroup(this);
         this.enemyGroup = new EnemyGroup(this);
         this.enemyBulletGroup = new EnemyBulletGroup(this);
         this.player = new Player(this, 375, 800, 'char');
         this.player.setSize(50, 100);
-        //this.end = new Book(this, 375, 200, 'char');
 
         this.enemyBulletGroup.children.iterate(function(bullet) {
             bullet.setDisplaySize(25, 25);
@@ -37,6 +31,8 @@ class LevelOne extends Phaser.Scene{
         }); 
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, this.enemyHitEvent, null, this.scene);
         
+        
+        this.physics.world.on('worldbounds', this.onWorldbounds, this);
        
         
         // keyobaord keycodes
@@ -66,25 +62,46 @@ class LevelOne extends Phaser.Scene{
             loop: true
         });
 
-    
-        //pick it up to move to next level
+        /*
         this.endTimer = this.time.addEvent({
             delay: 500,
-            callback: ()=> {
-                this.end = new Book (this, 375, 200, 'placeholder');
-                this.physics.add.overlap(this.player, this.end, ()=>{
-                    this.scene.start('level2scene');
-                })
-            },
-            callbackScope: this
+            callback: this.end,
+            args: [this],
+            callbackScope: this,
+            loop: false
         });
+        */
         
         
     }
 
+    end(scene) {
+        scene.end = scene.add.sprite()
+    }
 
+    //destroys bullet when they go off screen
+    onWorldbounds(body) {
+        console.log(body.gameObject);
 
+        const isBullet = this.bulletGroup.contains(body.gameObject);
+        if (isBullet) {
+            this.bulletGroup.onWorldbounds(body);
+            body.gameObject.destroy();
+        }
 
+        const isEnemyBullet = this.enemyBulletGroup.contains(body.gameObject);
+        if (isEnemyBullet) {
+            body.gameObject.kill();
+        }
+
+        const isEnemy = this.enemyGroup.contains(body.gameObject);
+        if (isEnemy) {
+            console.log("?");
+            body.destroy();
+            body.destroy();
+        }
+    }
+    
     //for each enemy on the screen shoot
     enemyShoot(enemyGroup, enemyBulletGroup) {
         enemyGroup.children.each(function(enemy) {

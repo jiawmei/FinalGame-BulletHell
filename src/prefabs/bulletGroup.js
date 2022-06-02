@@ -17,7 +17,7 @@ class BulletGroup extends Phaser.Physics.Arcade.Group{
     }
 
     fireBullet(x,y){
-        const bullet = this.getFirstDead(true);
+        const bullet = this.getFirstDead(false);
         if(bullet){
             bullet.fire(x,y);
         }
@@ -28,6 +28,8 @@ class BulletGroup extends Phaser.Physics.Arcade.Group{
 class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'bullets');
+        scene.physics.add.existing(this);
+        this.setCollideWorldBounds(true);
     }
 
     fire(x,y){

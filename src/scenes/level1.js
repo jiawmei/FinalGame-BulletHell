@@ -11,6 +11,7 @@ class LevelOne extends Phaser.Scene{
         this.load.image('enemy', './assets/Enemies.png');
         this.load.image('enemyBullets', './assets/Circle.png');
         this.load.image('placeholder', './assets/placeholdercharacter.png');
+        this.load.image('back2', './assets/BG-1-01.png');
     }
 
     create(){
@@ -20,11 +21,19 @@ class LevelOne extends Phaser.Scene{
         this.enemyBulletGroup = new EnemyBulletGroup(this);
         this.player = new Player(this, 375, 800, 'char');
         this.player.setSize(50, 100);
-        //this.end = new Book(this, 375, 200, 'char');
+        this.end = new Book (this, 375, 200, 'placeholder');
+
+        this.physics.add.overlap(this.player, this.end, (end)=>{
+            end.setVisible(true);
+            this.scene.start('level2scene');
+        });
+        this.end.body.enable = false;
+        
+        this.score = 0;
 
         this.enemyBulletGroup.children.iterate(function(bullet) {
             bullet.setDisplaySize(25, 25);
-            bullet.setSize(20, 20);
+            bullet.setSize(30, 30);
         })
     
         this.physics.add.collider(this.player, this.enemyGroup, function(player) {
@@ -35,7 +44,15 @@ class LevelOne extends Phaser.Scene{
             
             player.gameOver = true;
         }); 
-        this.physics.add.collider(this.bulletGroup, this.enemyGroup, this.enemyHitEvent, null, this.scene);
+        this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
+            if (bullet.active && enemy.active) {
+                bullet.setActive(false);
+                bullet.setVisible(false);
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                this.score += 1;
+            }
+        }, null, this.scene);
         
         // keyobaord keycodes
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -57,31 +74,14 @@ class LevelOne extends Phaser.Scene{
 
         //timer for enemies shooting
         this.shootTimer = this.time.addEvent({
-            delay: 500,
+            delay: 750,
             callback: this.enemyShoot,
             args: [this.enemyGroup, this.enemyBulletGroup],
             callbackScope: this,
             loop: true
-        });
-
-    
-        //pick it up to move to next level
-        this.endTimer = this.time.addEvent({
-            delay: 500,
-            callback: ()=> {
-                this.end = new Book (this, 375, 200, 'placeholder');
-                this.physics.add.overlap(this.player, this.end, ()=>{
-                    this.scene.start('level2scene');
-                })
-            },
-            callbackScope: this
-        });
-        
+        });        
         
     }
-
-
-
 
     //for each enemy on the screen shoot
     enemyShoot(enemyGroup, enemyBulletGroup) {
@@ -91,18 +91,6 @@ class LevelOne extends Phaser.Scene{
             }
         })
     }
-
-    //handling enemy/player bullet collision
-    enemyHitEvent(bullet, enemy) {
-        if (bullet.active && enemy.active) {
-            bullet.setActive(false);
-            bullet.setVisible(false);
-            enemy.setActive(false);
-            enemy.setVisible(false);
-        }
-    }
-
-    
     
     spawnEnemy() {
         this.enemyGroup.spawnEnemy();
@@ -118,12 +106,16 @@ class LevelOne extends Phaser.Scene{
     }
     
     shootBullet(){
-        this.bulletGroup.fireBullet(this.player.x, this.player.y - 20);
+        this.bulletGroup.fireBulletX(this.player.x - 20, this.player.y, 900);
+        this.bulletGroup.fireBulletY(this.player.x, this.player.y - 20, -900);
     }
 
     update(){
-        // change background later
-        //this.background.tilePositionY += 1;
+
+        if (this.score >= 20) {
+            this.end.setVisible(true);
+            this.end.body.enable = true;
+        }
 
         this.player.update();
 

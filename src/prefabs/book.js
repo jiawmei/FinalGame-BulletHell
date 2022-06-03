@@ -4,5 +4,6 @@ class Book extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.add.existing(this);
         this.scene.add.existing(this);
+        this.setVisible(false);
     }
 }

@@ -15,6 +15,15 @@ class LevelTwo extends Phaser.Scene{
         this.enemyBulletGroup = new EnemyBulletGroup(this);
         this.player = new Player(this, 375, 800, 'char');
         this.player.setSize(50, 100);
+        this.end = new Book (this, 375, 200, 'placeholder');
+
+        this.physics.add.overlap(this.player, this.end, (end)=>{
+            end.setVisible(true);
+            this.scene.start('level3scene');
+        });
+        this.end.body.enable = false;
+        
+        this.score = 0;
 
         this.enemyBulletGroup.children.iterate(function(bullet) {
             bullet.setDisplaySize(25, 25);
@@ -29,24 +38,26 @@ class LevelTwo extends Phaser.Scene{
             
             player.gameOver = true;
         }); 
-        this.physics.add.collider(this.bulletGroup, this.enemyGroup, this.enemyHitEvent, null, this.scene);
+        this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
+            if (bullet.active && enemy.active) {
+                bullet.setActive(false);
+                bullet.setVisible(false);
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                this.score += 1;
+            }
+        }, null, this.scene);       
         
-        
-        this.physics.world.on('worldbounds', this.onWorldbounds, this);
-       
-        
-        // keyobaord keycodes
+        // keyboard keycodes
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-
         
         // time to spawn enemies in
         this.enemyTimer = this.time.addEvent({
-            delay: 1000,
+            delay: 10000,
             callback: this.spawnEnemy,
             args: [this],
             callbackScope: this,
@@ -60,44 +71,10 @@ class LevelTwo extends Phaser.Scene{
             args: [this.enemyGroup, this.enemyBulletGroup],
             callbackScope: this,
             loop: true
-        });
-
-        this.endTimer = this.time.addEvent({
-            delay: 500,
-            callback: ()=> {
-                this.end = new Book (this, 375, 200, 'placeholder');
-                this.physics.add.overlap(this.player, this.end, ()=>{
-                    this.scene.start('level3scene');
-                })
-            },
-            callbackScope: this
-        });
-        
+        });        
         
     }
 
-    //destroys bullet when they go off screen
-    onWorldbounds(body) {
-        console.log(body.gameObject);
-
-        const isBullet = this.bulletGroup.contains(body.gameObject);
-        if (isBullet) {
-            this.bulletGroup.onWorldbounds(body);
-            body.gameObject.destroy();
-        }
-
-        const isEnemyBullet = this.enemyBulletGroup.contains(body.gameObject);
-        if (isEnemyBullet) {
-            body.gameObject.kill();
-        }
-
-        const isEnemy = this.enemyGroup.contains(body.gameObject);
-        if (isEnemy) {
-            console.log("?");
-            body.destroy();
-            body.destroy();
-        }
-    }
     
     //for each enemy on the screen shoot
     enemyShoot(enemyGroup, enemyBulletGroup) {
@@ -107,18 +84,6 @@ class LevelTwo extends Phaser.Scene{
             }
         })
     }
-
-    //handling enemy/player bullet collision
-    enemyHitEvent(bullet, enemy) {
-        if (bullet.active && enemy.active) {
-            bullet.setActive(false);
-            bullet.setVisible(false);
-            enemy.setActive(false);
-            enemy.setVisible(false);
-        }
-    }
-
-    
     
     spawnEnemy() {
         this.enemyGroup.spawnEnemy();
@@ -138,8 +103,11 @@ class LevelTwo extends Phaser.Scene{
     }
 
     update(){
-        // change background later
-        //this.background.tilePositionY += 1;
+
+        if (this.score >= 20) {
+            this.end.setVisible(true);
+            this.end.body.enable = true;
+        }
 
         this.player.update();
 

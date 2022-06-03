@@ -33,7 +33,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.body.reset(x,y);
         this.setActive(true);
         this.setVisible(true);
-        this.setVelocity(Phaser.Math.Between(-500, 500), Phaser.Math.Between(-500, 500));
+        this.setVelocity(Phaser.Math.Between(-500, 500), 600);
     }
 
     preUpdate(time, delta){

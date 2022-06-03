@@ -8,6 +8,7 @@ class EnemyGroup extends Phaser.Physics.Arcade.Group {
             visible: false,
             key: 'enemy'
         })
+        this.kill = 0;
     }
 
     spawnEnemy() {

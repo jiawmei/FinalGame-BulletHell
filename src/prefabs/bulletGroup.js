@@ -3,7 +3,7 @@ class BulletGroup extends Phaser.Physics.Arcade.Group{
         super(scene.physics.world, scene);
         this.createMultiple({
             classType: Bullet,
-            frameQuantity: 3,
+            frameQuantity: 30,
             active: false,
             visible: false,
             key: 'bullets'
@@ -16,10 +16,17 @@ class BulletGroup extends Phaser.Physics.Arcade.Group{
         console.log("...");
     }
 
-    fireBullet(x,y){
+    fireBulletX(x, y, velocity) {
         const bullet = this.getFirstDead(false);
         if(bullet){
-            bullet.fire(x,y);
+            bullet.fireX(x, y, velocity);
+        }
+    }
+
+    fireBulletY(x, y, velocity){
+        const bullet = this.getFirstDead(false);
+        if(bullet){
+            bullet.fireY(x, y, velocity);
         }
     }
 
@@ -31,18 +38,24 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
     }
-
-    fire(x,y){
+    fireX(x, y, velocity) {
         this.body.reset(x,y);
         this.setActive(true);
         this.setVisible(true);
-        this.setVelocityY(-900);
+        this.setVelocityX(velocity);
+    }
+
+    fireY(x, y, velocity){
+        this.body.reset(x,y);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setVelocityY(velocity);
     }
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
 
-        if(this.y <= 0){
+        if(this.y <= 0 || this.y >= 900 || this.x <= 0 || this.x >= 750){
             this.setActive(false);
             this.setVisible(false);
         }

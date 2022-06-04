@@ -1,12 +1,12 @@
-class EnemyBulletGroup extends Phaser.Physics.Arcade.Group{
+class EnemyBulletGroup3 extends Phaser.Physics.Arcade.Group{
     constructor(scene) {
         super(scene.physics.world, scene);
         this.createMultiple({
-            classType: EnemyBullet,
+            classType: EnemyBullet3,
             frameQuantity: 30,
             active: false,
             visible: false,
-            key: 'enemyBullets'
+            key: 'enemyBullets3'
         })
     }
 
@@ -19,9 +19,9 @@ class EnemyBulletGroup extends Phaser.Physics.Arcade.Group{
 
 }
 
-class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
+class EnemyBullet3 extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'enemyBullets');
+        super(scene, x, y, 'enemyBullets3');
 
         scene.physics.add.existing(this);
         this.scene.add.existing(this);
@@ -33,7 +33,7 @@ class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.body.reset(x,y);
         this.setActive(true);
         this.setVisible(true);
-        this.setVelocity(Phaser.Math.Between(-250, 250), 600);
+        this.setVelocity(-600, Phaser.Math.Between(-250, 250));
     }
 
     preUpdate(time, delta){

@@ -4,14 +4,17 @@ class LevelOne extends Phaser.Scene{
     }
 
     preload(){
-        this.load.audio('shoot', './assets/Shot4.mp3');
+        this.load.audio('shoot', './assets/Shot3.mp3');
         this.load.image('tempback', './assets/BG5-01.png');
         this.load.image('char', './assets/character100.png');
         this.load.image('bullets', './assets/BulletsBlack1.png');
         this.load.image('enemy', './assets/Enemies.png');
+        this.load.image('enemy2', './assets/GearEnemies.png');
+        this.load.image('enemy3', './assets/Series5Enemies.png');
         this.load.image('enemyBullets', './assets/Circle.png');
+        this.load.image('enemyBullets2', './assets/RedGear.png');
+        this.load.image('enemyBullets3', './assets/YellowGreen.png');
         this.load.image('placeholder', './assets/placeholdercharacter.png');
-        this.load.image('back2', './assets/BG-1-01.png');
     }
 
     create(){
@@ -20,26 +23,26 @@ class LevelOne extends Phaser.Scene{
         this.enemyGroup = new EnemyGroup(this);
         this.enemyBulletGroup = new EnemyBulletGroup(this);
         this.player = new Player(this, 375, 800, 'char');
-        this.player.setSize(50, 100);
+        this.player.setSize(40, 90);
         this.end = new Book (this, 375, 200, 'placeholder');
 
+        //collision for object to move to next level
         this.physics.add.overlap(this.player, this.end, (end)=>{
             end.setVisible(true);
             this.scene.start('level2scene');
         });
         this.end.body.enable = false;
         
+        //score
         this.score = 0;
 
+        //set bullet size
         this.enemyBulletGroup.children.iterate(function(bullet) {
             bullet.setDisplaySize(25, 25);
             bullet.setSize(30, 30);
         })
     
-        this.physics.add.collider(this.player, this.enemyGroup, function(player) {
-            
-            player.gameOver = true;
-        }); 
+        //enemy collision
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
             
             player.gameOver = true;
@@ -54,7 +57,7 @@ class LevelOne extends Phaser.Scene{
             }
         }, null, this.scene);
         
-        // keyobaord keycodes
+        // keyboard keycodes
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -92,6 +95,7 @@ class LevelOne extends Phaser.Scene{
         })
     }
     
+    //spawn the enemy
     spawnEnemy() {
         this.enemyGroup.spawnEnemy();
        
@@ -105,20 +109,24 @@ class LevelOne extends Phaser.Scene{
         
     }
     
+    //player shoot
     shootBullet(){
-        this.bulletGroup.fireBulletX(this.player.x - 20, this.player.y, 900);
         this.bulletGroup.fireBulletY(this.player.x, this.player.y - 20, -900);
     }
 
     update(){
 
+        //after killing x amount of enemies move to next level
         if (this.score >= 20) {
             this.end.setVisible(true);
             this.end.body.enable = true;
+            this.enemyTimer.remove();
+            this.shootTimer.remove();
         }
 
         this.player.update();
 
+        //out of bounds detection
         this.enemyGroup.children.iterate(function(enemy) {
             if (enemy.y >= 900) {
                 enemy.setActive(false);
@@ -136,6 +144,5 @@ class LevelOne extends Phaser.Scene{
         if(this.player.gameOver){
             this.scene.start("titleScene");
         }
-        this.enemyGroup.hitRight();
     }
 }

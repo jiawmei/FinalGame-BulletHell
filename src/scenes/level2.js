@@ -13,31 +13,43 @@ class LevelTwo extends Phaser.Scene{
         this.bulletGroup = new BulletGroup(this);
         this.enemyGroup = new EnemyGroup(this);
         this.enemyBulletGroup = new EnemyBulletGroup(this);
+        this.enemyGroup2 = new EnemyGroup2(this);
+        this.enemyBulletGroup2 = new EnemyBulletGroup2(this);
         this.player = new Player(this, 375, 800, 'char');
         this.player.setSize(50, 100);
         this.end = new Book (this, 375, 200, 'placeholder');
 
+        //collision for next level
         this.physics.add.overlap(this.player, this.end, (end)=>{
             end.setVisible(true);
             this.scene.start('level3scene');
         });
         this.end.body.enable = false;
         
+        //score
         this.score = 0;
 
+        //set bullet size
         this.enemyBulletGroup.children.iterate(function(bullet) {
             bullet.setDisplaySize(25, 25);
             bullet.setSize(20, 20);
         })
+        this.enemyBulletGroup2.children.iterate(function(bullet) {
+            bullet.setDisplaySize(25, 25);
+            bullet.setSize(30, 30);
+        })
     
-        this.physics.add.collider(this.player, this.enemyGroup, function(player) {
-            
-            player.gameOver = true;
-        }); 
+        //player collsion
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
             
             player.gameOver = true;
         }); 
+        this.physics.add.collider(this.player, this.enemyBulletGroup2, function(player) {
+            
+            player.gameOver = true;
+        }); 
+        
+        //enemy collision
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
             if (bullet.active && enemy.active) {
                 bullet.setActive(false);
@@ -46,7 +58,17 @@ class LevelTwo extends Phaser.Scene{
                 enemy.setVisible(false);
                 this.score += 1;
             }
-        }, null, this.scene);       
+        }, null, this.scene);
+        
+        this.physics.add.collider(this.bulletGroup, this.enemyGroup2, (bullet, enemy)=> {
+            if (bullet.active && enemy.active) {
+                bullet.setActive(false);
+                bullet.setVisible(false);
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                this.score += 1;
+            }
+        }, null, this.scene);  
         
         // keyboard keycodes
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -57,7 +79,7 @@ class LevelTwo extends Phaser.Scene{
         
         // time to spawn enemies in
         this.enemyTimer = this.time.addEvent({
-            delay: 10000,
+            delay: 1000,
             callback: this.spawnEnemy,
             args: [this],
             callbackScope: this,
@@ -66,16 +88,24 @@ class LevelTwo extends Phaser.Scene{
 
         //timer for enemies shooting
         this.shootTimer = this.time.addEvent({
-            delay: 500,
+            delay: 750,
             callback: this.enemyShoot,
             args: [this.enemyGroup, this.enemyBulletGroup],
             callbackScope: this,
             loop: true
-        });        
+        });   
+        
+        //timer for enemies shooting
+        this.shootTimer = this.time.addEvent({
+            delay: 750,
+            callback: this.enemyShoot,
+            args: [this.enemyGroup2, this.enemyBulletGroup2],
+            callbackScope: this,
+            loop: true
+        }); 
         
     }
 
-    
     //for each enemy on the screen shoot
     enemyShoot(enemyGroup, enemyBulletGroup) {
         enemyGroup.children.each(function(enemy) {
@@ -85,8 +115,10 @@ class LevelTwo extends Phaser.Scene{
         })
     }
     
+    //spawn the enemy
     spawnEnemy() {
         this.enemyGroup.spawnEnemy();
+        this.enemyGroup2.spawnEnemy();
        
         //change the timing of enemy spawns
         this.enemyTimer.reset({
@@ -98,21 +130,36 @@ class LevelTwo extends Phaser.Scene{
         
     }
     
+    //player shooting function
     shootBullet(){
-        this.bulletGroup.fireBullet(this.player.x, this.player.y - 20);
+        this.bulletGroup.fireBulletX(this.player.x - 20, this.player.y - 20, -900);
+        this.bulletGroup.fireBulletX(this.player.x + 20, this.player.y - 20, 900);
+        this.bulletGroup.fireBulletY(this.player.x, this.player.y - 20, -900);
+        this.bulletGroup.fireBulletY(this.player.x, this.player.y + 20, 900);
     }
 
     update(){
 
-        if (this.score >= 20) {
+        //after killing x amount of enemies move to next stage
+        if (this.score >= 40) {
             this.end.setVisible(true);
             this.end.body.enable = true;
+            this.enemyTimer.remove();
+            this.shootTimer.remove();
         }
 
         this.player.update();
 
+        //out of bounds detection
         this.enemyGroup.children.iterate(function(enemy) {
             if (enemy.y >= 900) {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+            }
+        });
+
+        this.enemyGroup2.children.iterate(function(enemy) {
+            if (enemy.x >= 750) {
                 enemy.setActive(false);
                 enemy.setVisible(false);
             }

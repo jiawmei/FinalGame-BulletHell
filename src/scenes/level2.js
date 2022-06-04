@@ -21,7 +21,7 @@ class LevelTwo extends Phaser.Scene{
 
         //collision for next level
         this.physics.add.overlap(this.player, this.end, (end)=>{
-            end.setVisible(true);
+            this.bgm2.stop();
             this.scene.start('level3scene');
         });
         this.end.body.enable = false;
@@ -76,6 +76,12 @@ class LevelTwo extends Phaser.Scene{
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+        this.bgm2 = this.sound.add('bgm3', {volume:0.1});
+        this.bgm2.setLoop(true);
+        if(!this.bgm2.isPlaying) {
+            this.bgm2.play();
+        }
         
         // time to spawn enemies in
         this.enemyTimer = this.time.addEvent({

@@ -4,7 +4,9 @@ class Start extends Phaser.Scene{
     }
 
     preload(){
-
+        this.load.audio('bgm1', './assets/bgm1-skyward.mp3');
+        this.load.audio('bgm2', './assets/bgm2-formation.mp3');
+        this.load.audio('bgm3', './assets/3R2 - Pancake is Love.mp3');
     }
 
     create(){

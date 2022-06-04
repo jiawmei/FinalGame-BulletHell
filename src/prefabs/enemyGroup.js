@@ -15,7 +15,7 @@ class EnemyGroup extends Phaser.Physics.Arcade.Group {
         if(enemy){
             enemy.spawn(Phaser.Math.Between(0, 750), 0);
             enemy.setDisplaySize(60, 60);
-            enemy.setSize(85, 85);
+            enemy.setSize(100, 100);
         }
     }
 }

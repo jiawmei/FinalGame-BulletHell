@@ -7,7 +7,7 @@ class LevelOne extends Phaser.Scene{
         this.load.audio('shoot', './assets/Shot3.mp3');
         this.load.image('tempback', './assets/BG5-01.png');
         this.load.image('char', './assets/character100.png');
-        this.load.image('bullets', './assets/BulletsBlack1.png');
+        this.load.image('bullets', './assets/AttackPink.png');
         this.load.image('enemy', './assets/Enemies.png');
         this.load.image('enemy2', './assets/GearEnemies.png');
         this.load.image('enemy3', './assets/Series5Enemies.png');
@@ -28,7 +28,7 @@ class LevelOne extends Phaser.Scene{
 
         //collision for object to move to next level
         this.physics.add.overlap(this.player, this.end, (end)=>{
-            end.setVisible(true);
+            this.bgm1.stop();
             this.scene.start('level2scene');
         });
         this.end.body.enable = false;
@@ -42,9 +42,12 @@ class LevelOne extends Phaser.Scene{
             bullet.setSize(30, 30);
         })
     
+        this.physics.add.collider(this.player, this.enemyGroup, function(player) {
+            
+            player.gameOver = true;
+        }); 
         //enemy collision
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
-            
             player.gameOver = true;
         }); 
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
@@ -64,7 +67,11 @@ class LevelOne extends Phaser.Scene{
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-
+        this.bgm1 = this.sound.add('bgm2', {volume:0.1});
+        this.bgm1.setLoop(true);
+        if(!this.bgm1.isPlaying) {
+            this.bgm1.play();
+        }
         
         // time to spawn enemies in
         this.enemyTimer = this.time.addEvent({
@@ -142,6 +149,7 @@ class LevelOne extends Phaser.Scene{
         }
         // if you get hit go back to title
         if(this.player.gameOver){
+            this.bgm1.stop();
             this.scene.start("titleScene");
         }
     }

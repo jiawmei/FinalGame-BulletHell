@@ -23,7 +23,7 @@ class LevelThree extends Phaser.Scene{
 
         //next level collider
         this.physics.add.overlap(this.player, this.end, (end)=>{
-            end.setVisible(true);
+            this.bgm3.stop();
             //this.scene.start('level3scene');
         });
         this.end.body.enable = false;
@@ -88,6 +88,12 @@ class LevelThree extends Phaser.Scene{
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+        this.bgm3 = this.sound.add('bgm1', {volume:0.1});
+        this.bgm3.setLoop(true);
+        if(!this.bgm3.isPlaying) {
+            this.bgm3.play();
+        }
         
         // time to spawn enemies in
         this.enemyTimer = this.time.addEvent({
@@ -164,10 +170,10 @@ class LevelThree extends Phaser.Scene{
     
     //player shooting function
     shootBullet(){
-        this.bulletGroup.fireBullet(this.player.x + 20, this.player.y - 20, 900, -900);
-        this.bulletGroup.fireBullet(this.player.x + 20, this.player.y + 20, 900, 900);
-        this.bulletGroup.fireBullet(this.player.x - 20, this.player.y - 20, -900, -900);
-        this.bulletGroup.fireBullet(this.player.x - 20, this.player.y + 20, -900, 900);
+        this.bulletGroup.fireBulletR(this.player.x + 20, this.player.y - 20, 900, -900);
+        this.bulletGroup.fireBulletL(this.player.x + 20, this.player.y + 20, 900, 900);
+        this.bulletGroup.fireBulletL(this.player.x - 20, this.player.y - 20, -900, -900);
+        this.bulletGroup.fireBulletR(this.player.x - 20, this.player.y + 20, -900, 900);
         this.bulletGroup.fireBulletX(this.player.x - 20, this.player.y - 20, -900);
         this.bulletGroup.fireBulletX(this.player.x + 20, this.player.y - 20, 900);
         this.bulletGroup.fireBulletY(this.player.x, this.player.y - 20, -900);
@@ -216,6 +222,7 @@ class LevelThree extends Phaser.Scene{
         }
         // if you get hit go back to title
         if(this.player.gameOver){
+            this.bgm3.stop();
             this.scene.start("titleScene");
         }
     }

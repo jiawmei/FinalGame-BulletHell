@@ -57,6 +57,7 @@ class LevelOne extends Phaser.Scene{
                 enemy.setActive(false);
                 enemy.setVisible(false);
                 this.score += 1;
+                console.log(this.score);
             }
         }, null, this.scene);
         
@@ -67,7 +68,7 @@ class LevelOne extends Phaser.Scene{
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        this.bgm1 = this.sound.add('bgm2', {volume:0.1});
+        this.bgm1 = this.sound.add('bgm1', {volume:0.1});
         this.bgm1.setLoop(true);
         if(!this.bgm1.isPlaying) {
             this.bgm1.play();
@@ -122,13 +123,15 @@ class LevelOne extends Phaser.Scene{
     }
 
     update(){
-
+        this.background.tilePositionY -= 3;
         //after killing x amount of enemies move to next level
-        if (this.score >= 20) {
+        if (this.score >= 3) {
             this.end.setVisible(true);
             this.end.body.enable = true;
             this.enemyTimer.remove();
             this.shootTimer.remove();
+            this.scene.start('level2scene');
+            this.bgm1.stop();
         }
 
         this.player.update();

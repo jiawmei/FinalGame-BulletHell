@@ -89,7 +89,7 @@ class LevelThree extends Phaser.Scene{
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        this.bgm3 = this.sound.add('bgm1', {volume:0.1});
+        this.bgm3 = this.sound.add('bgm3', {volume:0.1});
         this.bgm3.setLoop(true);
         if(!this.bgm3.isPlaying) {
             this.bgm3.play();
@@ -188,6 +188,7 @@ class LevelThree extends Phaser.Scene{
             this.end.body.enable = true;
             this.enemyTimer.remove();
             this.shootTimer.remove();
+            this.bgm3.stop();
         }
 
         this.player.update();

@@ -125,7 +125,7 @@ class LevelOne extends Phaser.Scene{
     update(){
         this.background.tilePositionY -= 3;
         //after killing x amount of enemies move to next level
-        if (this.score >= 3) {
+        if (this.score >= 20) {
             this.end.setVisible(true);
             this.end.body.enable = true;
             this.enemyTimer.remove();

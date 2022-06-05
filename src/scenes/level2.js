@@ -180,7 +180,7 @@ class LevelTwo extends Phaser.Scene{
         }
         // if you get hit go back to title
         if(this.player.gameOver){
-            this.scene.start("titleScene");
+            this.scene.start("level2scene");
         }
     }
 }

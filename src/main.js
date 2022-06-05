@@ -2,7 +2,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 750,
     height: 900, 
-    scene: [ Start , Tutorial, LevelOne , LevelTwo, LevelThree],
+    scene: [ Start , Tutorial, LevelOne , LevelTwo, LevelThree, Ending, Credits],
     //display: block,
     //margin: auto,
     physics: {

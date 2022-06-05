@@ -5,7 +5,7 @@ class Tutorial extends Phaser.Scene{
 
     preload(){
         this.load.audio('shoot', './assets/Shot3.mp3');
-        this.load.image('background', './assets/white.jpg');
+        this.load.image('background', './assets/BG-1-01.png');
         this.load.image('char', './assets/character100.png');
         this.load.image('bullets', './assets/AttackPink.png');
         this.load.image('enemy', './assets/Enemies.png');
@@ -19,14 +19,21 @@ class Tutorial extends Phaser.Scene{
 
     create(){
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Arial',
             fontSize: '28px',
-            color: '#000000',
-            align: 'right',
+            color: '#964B00',
+            align: 'middle',
             fixedWidth: 0
         }
         
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background').setOrigin(0,0);
+        this.bulletGroup = new BulletGroup(this);
+        
+        this.enemy1 = this.add.sprite(200, 270, 'enemy').setScale(0.2);
+        this.enemy2 = this.add.sprite(350, 270, 'enemy2').setScale(0.2);
+        this.enemy2 = this.add.sprite(500, 270, 'enemy3').setScale(0.2);
+        //enemy1.setScale(0.5);
+        
         
         // keyboard controls
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -41,16 +48,29 @@ class Tutorial extends Phaser.Scene{
         this.player = new Player(this, 375, 800, 'char');
         this.player.setSize(40, 90);
 
-        this.line1 = this.add.text(250, 100, "This is Elira", menuConfig).setOrigin(0);
-        this.line2 = this.add.text(250, 100, "She is lost", menuConfig).setOrigin(0);
-        
+
+        // tutorial text
+        this.line1 = this.add.text(175, 100, "Use the arrow keys to move", menuConfig).setOrigin(0);
+        this.line2 = this.add.text(175, 150, "Press the Spacebar to fire", menuConfig).setOrigin(0);
+        this.line3 = this.add.text(180, 200, "These are the enemies", menuConfig).setOrigin(0);
+        this.line4 = this.add.text(150, 325, "Getting hit will cause you to lose", menuConfig).setOrigin(0);
+        this.line5 = this.add.text(150, 375, "Defeat the enemies by firing at them", menuConfig).setOrigin(0);
+        this.line6 = this.add.text(275, 500, "Press A to Start", menuConfig).setOrigin(0);  
     }
 
-
+    shootBullet(){
+        this.bulletGroup.fireBulletY(this.player.x, this.player.y - 20, -900);
+    }
     update(){
+        this.player.update();
         if(Phaser.Input.Keyboard.JustDown(keyA)){
             this.scene.start("level1scene");
         }
-        this.player.update();
+        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+            this.shootBullet();
+            this.sound.play('shoot', {volume:0.1});
+            
+        }
+        
     }
 }

@@ -224,7 +224,7 @@ class LevelThree extends Phaser.Scene{
         // if you get hit go back to title
         if(this.player.gameOver){
             this.bgm3.stop();
-            this.scene.start("titleScene");
+            this.scene.start("level3scene");
         }
     }
 }

@@ -153,7 +153,7 @@ class LevelOne extends Phaser.Scene{
         // if you get hit go back to title
         if(this.player.gameOver){
             this.bgm1.stop();
-            this.scene.start("titleScene");
+            this.scene.start("level1scene");
         }
     }
 }

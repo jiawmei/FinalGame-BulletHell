@@ -13,7 +13,7 @@ class LevelTwo extends Phaser.Scene{
         this.load.image('enemy2', './assets/GearEnemies.png');
         this.load.image('enemy3', './assets/Series5Enemies.png');
         this.load.image('enemyBullets', './assets/Circle.png');
-        this.load.image('enemyBullets2', './assets/RedGear.png');
+        this.load.image('enemyBullets2', './assets/Redgear.png');
         this.load.image('enemyBullets3', './assets/YellowGreen.png');
         this.load.image('placeholder', './assets/placeholdercharacter.png');
     }

@@ -5,6 +5,17 @@ class LevelThree extends Phaser.Scene{
 
     preload(){
         this.load.image('back3', './assets/BG3-01.png');
+        this.load.audio('shoot', './assets/shot3.mp3');
+        this.load.image('background', './assets/BG-1-01.png');
+        this.load.image('char', './assets/character100.png');
+        this.load.image('bullets', './assets/AttackPink.png');
+        this.load.image('enemy', './assets/Enemies.png');
+        this.load.image('enemy2', './assets/GearEnemies.png');
+        this.load.image('enemy3', './assets/Series5Enemies.png');
+        this.load.image('enemyBullets', './assets/Circle.png');
+        this.load.image('enemyBullets2', './assets/RedGear.png');
+        this.load.image('enemyBullets3', './assets/YellowGreen.png');
+        this.load.image('placeholder', './assets/placeholdercharacter.png');
     }
 
 

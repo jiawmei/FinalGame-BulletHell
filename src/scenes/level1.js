@@ -4,7 +4,7 @@ class LevelOne extends Phaser.Scene{
     }
 
     preload(){
-        this.load.audio('shoot', './assets/Shot3.mp3');
+        this.load.audio('shoot', './assets/shot3.mp3');
         this.load.image('tempback', './assets/BG5-01.png');
         this.load.image('char', './assets/character100.png');
         this.load.image('bullets', './assets/AttackPink.png');

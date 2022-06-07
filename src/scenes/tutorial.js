@@ -65,6 +65,7 @@ class Tutorial extends Phaser.Scene{
         this.player.update();
         if(Phaser.Input.Keyboard.JustDown(keyA)){
             this.scene.start("level1scene");
+            //this.scene.start("level3scene");
         }
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             this.shootBullet();

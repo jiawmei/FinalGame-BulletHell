@@ -56,13 +56,35 @@ class LevelThree extends Phaser.Scene{
             bullet.setSize(30, 30);
         });
     
-        //player collision
+        //player collision with enemy bullets (YOU LOSE)
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
             
             player.gameOver = true;
         }); 
+        this.physics.add.collider(this.player, this.enemyBulletGroup2, function(player) {
+            
+            player.gameOver = true;
+        }); 
+        this.physics.add.collider(this.player, this.enemyBulletGroup3, function(player) {
+            
+            player.gameOver = true;
+        }); 
 
-        //bullet collision
+        //player collision with enemy (YOU LOSE)
+        this.physics.add.collider(this.player, this.enemyGroup, function(player) {
+            
+            player.gameOver = true;
+        }); 
+        this.physics.add.collider(this.player, this.enemyGroup2, function(player) {
+            
+            player.gameOver = true;
+        }); 
+        this.physics.add.collider(this.player, this.enemyGroup3, function(player) {
+            
+            player.gameOver = true;
+        }); 
+
+        //player bullet collision with enemy (ENEMY DIES)
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
             if (bullet.active && enemy.active) {
                 bullet.setActive(false);
@@ -99,6 +121,7 @@ class LevelThree extends Phaser.Scene{
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 
         this.bgm3 = this.sound.add('bgm3', {volume:0.1});
         this.bgm3.setLoop(true);
@@ -199,7 +222,8 @@ class LevelThree extends Phaser.Scene{
             this.end.body.enable = true;
             this.enemyTimer.remove();
             this.shootTimer.remove();
-            this.bgm3.stop();
+            //this.bgm3.stop();
+            this.scene.start('endscene');
         }
 
         this.player.update();
@@ -236,6 +260,10 @@ class LevelThree extends Phaser.Scene{
         if(this.player.gameOver){
             this.bgm3.stop();
             this.scene.start("level3scene");
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(keyA)){
+            this.scene.start('endscene');
         }
     }
 }

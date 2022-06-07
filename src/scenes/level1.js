@@ -41,15 +41,19 @@ class LevelOne extends Phaser.Scene{
             bullet.setDisplaySize(25, 25);
             bullet.setSize(30, 30);
         })
-    
+        
+        // player collision with enemy (YOU DIED)
         this.physics.add.collider(this.player, this.enemyGroup, function(player) {
             
             player.gameOver = true;
         }); 
-        //enemy collision
+        
+        //enemy collision with player (YOU DIED)
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
             player.gameOver = true;
         }); 
+        
+        // player bullets collision with enemy (ENEMY DIES)
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
             if (bullet.active && enemy.active) {
                 bullet.setActive(false);
@@ -57,7 +61,7 @@ class LevelOne extends Phaser.Scene{
                 enemy.setActive(false);
                 enemy.setVisible(false);
                 this.score += 1;
-                console.log(this.score);
+                //console.log(this.score);
             }
         }, null, this.scene);
         
@@ -67,7 +71,9 @@ class LevelOne extends Phaser.Scene{
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 
+        // start the music for level 1
         this.bgm1 = this.sound.add('bgm1', {volume:0.1});
         this.bgm1.setLoop(true);
         if(!this.bgm1.isPlaying) {
@@ -130,8 +136,8 @@ class LevelOne extends Phaser.Scene{
             this.end.body.enable = true;
             this.enemyTimer.remove();
             this.shootTimer.remove();
-            this.scene.start('level2scene');
             this.bgm1.stop();
+            this.scene.start('level2scene');
         }
 
         this.player.update();
@@ -154,6 +160,11 @@ class LevelOne extends Phaser.Scene{
         if(this.player.gameOver){
             this.bgm1.stop();
             this.scene.start("level1scene");
+        }
+        
+        if(Phaser.Input.Keyboard.JustDown(keyA)){
+            this.bgm1.stop();
+            this.scene.start('level2scene');
         }
     }
 }

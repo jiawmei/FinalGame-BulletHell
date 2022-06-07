@@ -50,7 +50,7 @@ class LevelTwo extends Phaser.Scene{
             bullet.setSize(30, 30);
         })
     
-        //player collsion
+        //player collsion with enemy bullets
         this.physics.add.collider(this.player, this.enemyBulletGroup, function(player) {
             
             player.gameOver = true;
@@ -60,6 +60,16 @@ class LevelTwo extends Phaser.Scene{
             player.gameOver = true;
         }); 
         
+        // player collision with enemy
+        this.physics.add.collider(this.player, this.enemyGroup, function(player) {
+            
+            player.gameOver = true;
+        }); 
+        this.physics.add.collider(this.player, this.enemyGroup2, function(player) {
+            
+            player.gameOver = true;
+        }); 
+
         //enemy collision
         this.physics.add.collider(this.bulletGroup, this.enemyGroup, (bullet, enemy)=> {
             if (bullet.active && enemy.active) {
@@ -87,6 +97,7 @@ class LevelTwo extends Phaser.Scene{
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 
         this.bgm2 = this.sound.add('bgm2', {volume:0.1});
         this.bgm2.setLoop(true);
@@ -164,6 +175,7 @@ class LevelTwo extends Phaser.Scene{
             this.enemyTimer.remove();
             this.shootTimer.remove();
             this.bgm2.stop();
+            this.scene.start('level3scene');
         }
 
         this.player.update();
@@ -193,6 +205,11 @@ class LevelTwo extends Phaser.Scene{
         if(this.player.gameOver){
             this.scene.start("level2scene");
             this.bgm2.stop();
+        }
+        
+        if(Phaser.Input.Keyboard.JustDown(keyA)){
+            this.bgm2.stop();
+            this.scene.start('level3scene');
         }
     }
 }

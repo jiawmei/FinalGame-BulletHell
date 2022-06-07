@@ -21,7 +21,7 @@ class Start extends Phaser.Scene{
         }
         
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'title').setOrigin(0, 0);
-
+        
         // basic instructions on how to play
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         /*this.add.text(200, 300, "Arrow keys to move",menuConfig).setOrigin(0);

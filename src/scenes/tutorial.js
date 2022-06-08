@@ -22,7 +22,16 @@ class Tutorial extends Phaser.Scene{
             fontFamily: 'Arial',
             fontSize: '28px',
             color: '#964B00',
-            align: 'middle',
+            align: 'center',
+            //boundsAlignV: 'middle',
+            fixedWidth: 0
+        }
+        let menuConfig2 = {
+            fontFamily: 'Arial',
+            fontSize: '18px',
+            color: '#964B00',
+            align: 'center',
+            //boundsAlignV: 'middle',
             fixedWidth: 0
         }
         
@@ -51,11 +60,13 @@ class Tutorial extends Phaser.Scene{
 
         // tutorial text
         this.line1 = this.add.text(175, 100, "Use the arrow keys to move", menuConfig).setOrigin(0);
-        this.line2 = this.add.text(175, 150, "Press the Spacebar to fire", menuConfig).setOrigin(0);
-        this.line3 = this.add.text(180, 200, "These are the enemies", menuConfig).setOrigin(0);
+        this.line2 = this.add.text(173, 150, "Press the Spacebar to fire", menuConfig).setOrigin(0);
+        this.line3 = this.add.text(185, 200, "These are the enemies", menuConfig).setOrigin(0);
         this.line4 = this.add.text(150, 325, "Getting hit will cause you to lose", menuConfig).setOrigin(0);
-        this.line5 = this.add.text(150, 375, "Defeat the enemies by firing at them", menuConfig).setOrigin(0);
-        this.line6 = this.add.text(275, 500, "Press A to Start", menuConfig).setOrigin(0);  
+        this.line5 = this.add.text(145, 375, "Defeat the enemies by firing at them", menuConfig).setOrigin(0);
+        this.line6 = this.add.text(275, 500, "Press A to Start", menuConfig).setOrigin(0);
+        
+        this.line7 = this.add.text(350, 850, "FOR TA: PRESS A ON LEVEL TO SKIP LEVEL",menuConfig2).setOrigin(0);
     }
 
     shootBullet(){

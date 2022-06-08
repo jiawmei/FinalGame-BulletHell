@@ -222,7 +222,7 @@ class LevelThree extends Phaser.Scene{
             this.end.body.enable = true;
             this.enemyTimer.remove();
             this.shootTimer.remove();
-            //this.bgm3.stop();
+            this.bgm3.stop();
             this.scene.start('endscene');
         }
 
@@ -264,6 +264,7 @@ class LevelThree extends Phaser.Scene{
 
         if(Phaser.Input.Keyboard.JustDown(keyA)){
             this.scene.start('endscene');
+            this.bgm3.stop();
         }
     }
 }

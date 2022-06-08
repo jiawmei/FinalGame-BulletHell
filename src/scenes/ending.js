@@ -20,7 +20,7 @@ class Ending extends Phaser.Scene{
             this.scene.start("creditsscene");
         }
         if(Phaser.Input.Keyboard.JustDown(keyM)){
-            this.scene.start("titlescene");
+            this.scene.start("titleScene");
         }
     }
 }
